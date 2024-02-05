@@ -129,8 +129,8 @@ void	TheServer::ManageClients()
 				return;
 			}
 			it->buffer[it->readBytes] = '\0';
-			std::cout << confg[0].locations[0].root << std::endl;
-			std::cout << "Buff = " << it->buffer << std::endl;
+			// std::cout << confg[0].locations[0].root << std::endl;
+			// std::cout << "Buff = " << it->buffer << std::endl;
 			// it->buff.append(buffer, it->readBytes);
 			RequestParse(*it, it->readBytes);
 		}
@@ -220,29 +220,41 @@ void	TheServer::RequestHeadersParse(TheClient& client)
 		RequestPost(client);
 }
 
+// std::string randomStrGen(int numChars){
+//   std::string genStr="";
+//   int sizeStr=0;
+  
+//   while(sizeStr<numChars){
+//     int asciiPos= std::rand();
+//     if((asciiPos>57 && asciiPos<65) || (asciiPos>90 && asciiPos<97))
+//       continue;
+//     genStr+=(char) asciiPos;
+//     sizeStr++;
+//   }
+  
+//   return genStr;
+// }
+
 void	TheServer::RequestPost(TheClient& client)
 {
-	// if (client.map["Transfer-Encoding"] == "chunked")
-		// handle chunked tranfer
-	std::string ContentType = client.map["Content-Type"];
-	client.extension = ContentType.substr(ContentType.find('/') + 1, ContentType.length());
-	if (client.extension == "plain")
-		client.extension = "txt";
-	std::ofstream	RequestFile("uploads/upload." + client.extension, std::ios::app);
-	if (!RequestFile.is_open())
-	{
-		std::cerr << "Error: " << strerror(errno) << std::endl;
+	// if(client.map["Content-Length"])
+	std::string type = client.map["Content-Type"];
+	std::string ext = type.substr(type.find('/')+1, type.length());
+	if (ext == "plain")
+		ext = "txt";
+	std::ofstream file("uploads/file."+ext, std::ios::app);
+	if(!file.is_open()){
+		std::cerr << "Can't open the file" << std::endl;
 		return;
 	}
-	else
-	{
-		if (!client.buff.empty())
-		{
-			RequestFile.write(client.buff.c_str(), client.buff.size());
+	else{
+		if(!client.buff.empty()){
+			file.write(client.buff.c_str(), client.buff.size());
 			client.buff.erase();
 		}
 		else
-			RequestFile.write(client.buffer, client.readBytes);
-		RequestFile.close();
+			file.write(client.buffer, client.readBytes);
+		file.close();
 	}
+
 }
