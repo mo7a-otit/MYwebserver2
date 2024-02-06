@@ -11,7 +11,7 @@ void	TheServer::RequestParse(TheClient& client, int readBytes)
 	else if (client.request == true && client.method == "POST" 
 		&& client.flagContntLength == false)
 	{
-		RequestPost(client);
+		PostContentLength(client);
 	}
 }
 
@@ -55,5 +55,5 @@ void	TheServer::RequestHeadersParse(TheClient& client)
 	}
 	if (client.request == true && client.method == "POST"
 			&& client.flagContntLength == false)
-		RequestPost(client);
+		PostContentLength(client);
 }

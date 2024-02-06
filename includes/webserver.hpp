@@ -45,7 +45,7 @@ class   TheServer
 		void	RequestParse(TheClient& client, int readBytes);
 		void	RequestLineParse(TheClient& client);
 		void	RequestHeadersParse(TheClient& client);
-		void	RequestPost(TheClient& client);
+		void	PostContentLength(TheClient& client);
 		void	set_confg(const std::vector<ServerConfig>& confg);
 };
 
