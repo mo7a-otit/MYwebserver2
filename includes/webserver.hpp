@@ -68,6 +68,8 @@ class	TheClient
 		int				readBytes;
 
 		size_t count_bodyLen;
+		size_t content_length;
+		bool flagContntLength;
 };
 
 #endif

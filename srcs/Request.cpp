@@ -8,7 +8,8 @@ void	TheServer::RequestParse(TheClient& client, int readBytes)
 		if (client.buff.find("\r\n\r\n") != std::string::npos)
 			RequestLineParse(client);
 	}
-	else if (client.request == true && client.method == "POST")
+	else if (client.request == true && client.method == "POST" 
+		&& client.flagContntLength == false)
 	{
 		RequestPost(client);
 	}
@@ -52,6 +53,7 @@ void	TheServer::RequestHeadersParse(TheClient& client)
 		client.buff.erase(0, client.buff.find('\r') + 2);
 		client.map[key] = value;
 	}
-	if (client.request == true && client.method == "POST")
+	if (client.request == true && client.method == "POST"
+			&& client.flagContntLength == false)
 		RequestPost(client);
 }

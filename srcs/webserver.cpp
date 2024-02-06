@@ -167,6 +167,8 @@ void	TheServer::AddClientsToSet()
 void	TheServer::RequestPost(TheClient& client)
 {
 	// if(client.map["Content-Length"])
+	std::stringstream str(client.map["Content-Length"]);
+	str >> client.content_length;
 	std::string type = client.map["Content-Type"];
 	std::string ext = type.substr(type.find('/')+1, type.length());
 	if (ext == "plain")
@@ -179,11 +181,22 @@ void	TheServer::RequestPost(TheClient& client)
 	else{
 		if(!client.buff.empty()){
 			file.write(client.buff.c_str(), client.buff.size());
+			client.count_bodyLen = client.buff.size();
 			client.buff.erase();
 		}
-		else
+		else{
 			file.write(client.buffer, client.readBytes);
-		file.close();
+			client.count_bodyLen += client.readBytes;
+		}
+		std::cout << client.count_bodyLen << " = " 
+			<< client.content_length << std::endl;
+		if(client.count_bodyLen == client.content_length){
+			std::cout << client.content_length << " = " 
+				<< client.count_bodyLen << std::endl;
+			std::cout << "file closed" << std::endl;
+			file.close();
+			client.flagContntLength = true;
+		}
 	}
 
 }
