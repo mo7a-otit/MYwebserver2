@@ -66,6 +66,8 @@ class	TheClient
 		bool			request;
 		std::string		extension;
 		int				readBytes;
+
+		size_t count_bodyLen;
 };
 
 #endif

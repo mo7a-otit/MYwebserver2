@@ -7,6 +7,7 @@ SRCS = srcs/main.cpp\
 		srcs/Location.cpp\
 		srcs/Server.cpp\
 		srcs/Client.cpp\
+		srcs/Request.cpp\
 
 OBJS = $(SRCS:.cpp=.o)
 
