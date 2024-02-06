@@ -67,9 +67,14 @@ class	TheClient
 		std::string		extension;
 		int				readBytes;
 
+		/***Othmane's Part***/
+		std::string generateRandomString(int length);
+
+		
 		size_t count_bodyLen;
 		size_t content_length;
 		bool flagContntLength;
+		std::string randomString;
 };
 
 #endif

@@ -1,6 +1,17 @@
 #include "../includes/webserver.hpp"
 
+std::string TheClient::generateRandomString(int length) {
+    std::srand(std::time(0));
+    const char characters[] = "abcdefghijklmnopqrstuvwxyz";
+    int numCharacters = sizeof(characters) - 1;
+    std::string randomString;
 
+    for (int i = 0; i < length; ++i) {
+        int randomIndex = std::rand() % numCharacters;
+        randomString += characters[randomIndex];
+    }
+    return randomString;
+}
 std::string FileType(std::string path){
     if (path == "css")
         return (".css");
@@ -55,7 +66,7 @@ void	TheServer::PostContentLength(TheClient& client)
 	std::string type = client.map["Content-Type"];
 	std::string filename = FileType(type.substr(type.find('/')+1, type.length()));
 
-	std::ofstream file("uploads/file"+filename, std::ios::app);
+	std::ofstream file("uploads/" + client.randomString + filename, std::ios::app);
 	if(!file.is_open()){
 		std::cerr << "Can't open the file" << std::endl;
 		return;
