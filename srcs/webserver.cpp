@@ -198,5 +198,4 @@ void	TheServer::RequestPost(TheClient& client)
 			client.flagContntLength = true;
 		}
 	}
-
 }

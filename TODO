@@ -1,0 +1,45 @@
+/*void Response::postType(std::string path)
+{
+    if (path == "text/css")
+        this->_contentType = ".css";
+    else if (path == "text/csv")
+        this->_contentType = ".csv";
+    else if (path == "image/gif")
+        this->_contentType = ".gif";
+    else if (path == "text/html")
+        this->_contentType = ".htm";
+    else if (path == "text/html" || path == ".php")
+        this->_contentType = ".html";
+    else if (path == "image/x-icon")
+        this->_contentType = ".ico";
+    else if (path == "image/jpeg")
+        this->_contentType = ".jpeg";
+    else if (path == "image/jpeg")
+        this->_contentType = ".jpg";
+    else if (path == "application/javascript")
+        this->_contentType = ".js";
+    else if (path == "application/json")
+        this->_contentType = ".json";
+    else if (path == "image/png")
+        this->_contentType = ".png";
+    else if (path == "application/pdf")
+        this->_contentType = ".pdf";
+    else if (path == "image/svg+xml")
+        this->_contentType = ".svg";
+    else if (path == "text/plain")
+        this->_contentType = ".txt";
+    else if (path == "video/mp4")
+        this->_contentType = ".mp4";
+    else if (path == "video/webm")
+        this->_contentType = ".WebM";
+    else if (path == "video/ogg")
+        this->_contentType = ".Ogg";
+    else if (path == "video/x-msvideo")
+        this->_contentType = ".AVI";
+    else if (path == "video/mpeg")
+        this->_contentType = ".MPEG";
+    else if (path == "application/zip")
+        this->_contentType = ".zip";
+    else if (path == "image/tiff")
+        this->_contentType = ".tiff";
+}*/
