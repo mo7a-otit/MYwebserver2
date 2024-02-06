@@ -19,10 +19,10 @@
 // #define PORT 1212
 #define BUFFER_SIZE 1024
 
-#include "Server.hpp"
+#include "ServerConfig.hpp"
 #include "Location.hpp"
 
-void run_server(Server server);
+
 std::vector<std::string> split_line(std::string line,\
                              std::string delimiter);
 

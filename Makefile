@@ -5,7 +5,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
 SRCS = srcs/main.cpp\
 		srcs/webserver.cpp\
 		srcs/Location.cpp\
-		srcs/Server.cpp\
+		srcs/ServerConfig.cpp\
 		srcs/Client.cpp\
 		srcs/Request.cpp\
 

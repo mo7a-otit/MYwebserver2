@@ -5,7 +5,7 @@ void removeSpaces(std::string& line){
          line.end());
  }
 
-Server::Server(){
+ServerConfig::ServerConfig(){
     this->host = "";
     this->server_name = "";
 }
@@ -66,7 +66,7 @@ int check_is_digit(std::string word){
     return 1;
 }
 
-void Server::initializeArray(){
+void ServerConfig::initializeArray(){
 
     // this->arr_derictives[0] = "listen";
     // this->arr_derictives[1] = "host";
@@ -80,7 +80,7 @@ void Server::initializeArray(){
 //     if ()
 // }
 
-int Server::get_listen(std::vector<std::string> word){
+int ServerConfig::get_listen(std::vector<std::string> word){
     // if (word.size() < 2)
     //     throw std::invalid_argument("listen: invalid input");
     if ("listen" == word[0]){
@@ -97,7 +97,7 @@ int Server::get_listen(std::vector<std::string> word){
     return 0;
 }
 
-int Server::get_host(std::vector<std::string> word){
+int ServerConfig::get_host(std::vector<std::string> word){
     // if (word.size() != 2)
     //     throw std::invalid_argument("host: invalid input");
     if ("host" == word[0]){
@@ -128,7 +128,7 @@ int Server::get_host(std::vector<std::string> word){
     return 0;
 }
 
-int Server::get_server_name(std::vector<std::string> word){
+int ServerConfig::get_server_name(std::vector<std::string> word){
         if ("server_name" == word[0]){
             // word[1].erase(word[1].find(';'));
             this->server_name = word[1];
@@ -137,24 +137,25 @@ int Server::get_server_name(std::vector<std::string> word){
         return 0;
 }
 
-int Server::get_error_page(std::vector<std::string> word){
+int ServerConfig::get_error_page(std::vector<std::string> word){
     if ("error_page" == word[0]){
         if (word.size() != 3)
             throw std::invalid_argument("error_pages: missing code or target..!");
-        std::cout << word[0] << " :";
+        // std::cout << word[0] << " :";
         if (word[1].length() != 3)
             throw std::invalid_argument("error_pages: invalid code");
         // if(word[2][0] != '/')
         //     throw std::invalid_argument("error_pages: invalid target");
         for (size_t i = 1; i < word.size(); i++)
             this->error_pages.push_back(word[i]);
-        std::cout << word[1] << " " << word[2] << std::endl;
+        if (access(word[2].c_str(), F_OK) == -1)
+            throw std::invalid_argument("error pages: file doesn't exist");
         return 1;
     }
     return 0;
 }
 
-int Server::get_clienMAxBodySize(std::vector<std::string> word){
+int ServerConfig::get_clienMAxBodySize(std::vector<std::string> word){
     if ("client_max_body_size" == word[0]){
         // word[1].erase(word[1].find(';'));
         for (size_t i = 0; i < word[1].length(); i++)
@@ -167,7 +168,7 @@ int Server::get_clienMAxBodySize(std::vector<std::string> word){
     return 0;
 }
 
-void Server::fill_server(std::string line, Server &srvr){
+void ServerConfig::fill_server(std::string line, ServerConfig &srvr){
     size_t posVergul = line.find(';');
     line.erase(posVergul);
     std::vector<std::string> word = split_line(line, " ");
@@ -200,7 +201,7 @@ void Server::fill_server(std::string line, Server &srvr){
 }
 
 
-void Server::get_file(std::string file){
+void ServerConfig::get_file(std::string file){
     BracketsCheck(file);
     std::ifstream ss;
     ss.open(file);
@@ -213,7 +214,7 @@ void Server::get_file(std::string file){
             if(line != "server{")
                 throw std::invalid_argument("server: invalid declaration");
 
-            Server srvr;
+            ServerConfig srvr;
             std::cout << "-----------SERVER-----------" << std::endl;
             while(std::getline(ss,line) && line != "}"){
                 if (line.find("location") != std::string::npos){
@@ -243,11 +244,8 @@ void Server::get_file(std::string file){
                     if (!line.empty())
                         throw std::invalid_argument("invalid input outside the server context");
                 }
-                else{
-                    std::cout << "The size of locations is: " << srvr.locations.size()
-                        << std::endl;
+                else
                     srvr.fill_server(line, srvr);
-                }
             }
             std::cout << "----------------------------" << std::endl;
             if (srvr.listen.size() < 1 || srvr.host == "")

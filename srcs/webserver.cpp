@@ -12,7 +12,7 @@ TheServer::~TheServer()
     	close (confg[x].serverSocket);
 }
 
-void	TheServer::set_confg(const std::vector<Server>& confg)
+void	TheServer::set_confg(const std::vector<ServerConfig>& confg)
 {
 	this->confg = confg;
 }

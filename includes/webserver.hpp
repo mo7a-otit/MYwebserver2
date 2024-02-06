@@ -19,7 +19,7 @@
 #include <sys/select.h>
 
 // conf headers
-#include "../includes/Server.hpp"
+#include "../includes/ServerConfig.hpp"
 #include "../includes/webserv.hpp"
 
 class	TheClient;
@@ -29,7 +29,7 @@ class   TheServer
 	private:
 		int			host_len;
 		sockaddr_in	host_addr;
-		std::vector<Server> confg;
+		std::vector<ServerConfig> confg;
 		int	maxSocket;
 		fd_set	readFrom_fds;
 		fd_set	writeTo_fds;
@@ -46,7 +46,7 @@ class   TheServer
 		void	RequestLineParse(TheClient& client);
 		void	RequestHeadersParse(TheClient& client);
 		void	RequestPost(TheClient& client);
-		void	set_confg(const std::vector<Server>& confg);
+		void	set_confg(const std::vector<ServerConfig>& confg);
 };
 
 class	TheClient
