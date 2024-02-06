@@ -164,7 +164,6 @@ void	TheServer::AddClientsToSet()
 	}
 }
 
-
 void	TheServer::RequestPost(TheClient& client)
 {
 	// if(client.map["Content-Length"])
