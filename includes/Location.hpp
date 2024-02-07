@@ -16,7 +16,7 @@ class Location{
         bool upload;
         bool cgi;
 
-        std::vector<std::string> cgi_path;
+        // std::vector<std::string> cgi_path;
         
 
         std::vector<std::string> vec_dup;
@@ -33,12 +33,12 @@ class Location{
         void get_location_Name(std::string);
         int get_root(std::vector<std::string>);
         int get_autoindex(std::vector<std::string>);
-        int get_methods(std::vector<std::string>);
+        int get_methods(std::vector<std::string>, Location&);
         //////wssalt hnaya
         int get_index(std::vector<std::string> word);
         int get_upload(std::vector<std::string> word);
         int get_cgi(std::vector<std::string> word);
-        int get_cgi_path(std::vector<std::string> word);
+        // int get_cgi_path(std::vector<std::string> word);
 };
 
 

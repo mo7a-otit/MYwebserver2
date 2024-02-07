@@ -1,5 +1,5 @@
-#ifndef SERVERCONFIG_HPP
-#define SERVERCONFIG_HPP
+#ifndef SERVER_HPP
+#define SERVER_HPP
 
 #include <sstream>
 #include <set>
@@ -7,15 +7,11 @@
 #include "Location.hpp"
 class Location;
 
-class ServerConfig{
+class Server{
     public:
         /*main container*/
     
-        std::vector<ServerConfig> servr;
-    /*this contairer contain all of this*/
-    //  |||||||||||||||||
-    //  VVVVVVVVVVVVVVVVV
-        int serverSocket;
+        std::vector<Server> servr;
         std::vector<int> listen;
         std::string root;
         std::string host;
@@ -27,10 +23,10 @@ class ServerConfig{
         std::vector<std::string> duplicate_vec;
 
     public:
-        ServerConfig();
+        Server();
 
         void get_file(std::string);
-        void fill_server(std::string line, ServerConfig &srvr);
+        void fill_server(std::string line, Server &srvr);
         
         /*****members*****/
         void initializeArray();

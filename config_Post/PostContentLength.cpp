@@ -1,6 +1,8 @@
-#include "../includes/webserver.hpp"
 
-std::string TheClient::generateRandomString(int length) {
+
+#include "../includes/webserv.hpp"
+
+std::string Client::generateRandomString(int length) {
     std::srand(std::time(0));
     const char characters[] = "abcdefghijklmnopqrstuvwxyz";
     int numCharacters = sizeof(characters) - 1;
@@ -58,12 +60,12 @@ std::string FileType(std::string path){
     return NULL;
 }
 
-void	TheServer::PostContentLength(TheClient& client)
+void	ServerManager::PostContentLength(Client& client)
 {
-	// if(client.map["Content-Length"])
-	std::stringstream str(client.map["Content-Length"]);
+	// if(client.data["Content-Length"])
+	std::stringstream str(client.data["Content-Length"]);
 	str >> client.content_length;
-	std::string type = client.map["Content-Type"];
+	std::string type = client.data["Content-Type"];
 	std::string filename = FileType(type.substr(type.find('/')+1, type.length()));
 
 	std::ofstream file("uploads/" + client.randomString + filename, std::ios::app);
@@ -84,8 +86,8 @@ void	TheServer::PostContentLength(TheClient& client)
 		std::cout << client.count_bodyLen << " = " 
 			<< client.content_length << std::endl;
 		if(client.count_bodyLen == client.content_length){
-			std::cout << client.content_length << " = " 
-				<< client.count_bodyLen << std::endl;
+			// std::cout << client.content_length << " = " 
+			// 	<< client.count_bodyLen << std::endl;
 			std::cout << "file closed" << std::endl;
 			file.close();
 			client.flagContntLength = true;

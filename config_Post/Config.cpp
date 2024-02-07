@@ -5,7 +5,7 @@ void removeSpaces(std::string& line){
          line.end());
  }
 
-ServerConfig::ServerConfig(){
+Server::Server(){
     this->host = "";
     this->server_name = "";
 }
@@ -66,7 +66,7 @@ int check_is_digit(std::string word){
     return 1;
 }
 
-void ServerConfig::initializeArray(){
+void Server::initializeArray(){
 
     // this->arr_derictives[0] = "listen";
     // this->arr_derictives[1] = "host";
@@ -80,7 +80,7 @@ void ServerConfig::initializeArray(){
 //     if ()
 // }
 
-int ServerConfig::get_listen(std::vector<std::string> word){
+int Server::get_listen(std::vector<std::string> word){
     // if (word.size() < 2)
     //     throw std::invalid_argument("listen: invalid input");
     if ("listen" == word[0]){
@@ -97,7 +97,7 @@ int ServerConfig::get_listen(std::vector<std::string> word){
     return 0;
 }
 
-int ServerConfig::get_host(std::vector<std::string> word){
+int Server::get_host(std::vector<std::string> word){
     // if (word.size() != 2)
     //     throw std::invalid_argument("host: invalid input");
     if ("host" == word[0]){
@@ -128,7 +128,7 @@ int ServerConfig::get_host(std::vector<std::string> word){
     return 0;
 }
 
-int ServerConfig::get_server_name(std::vector<std::string> word){
+int Server::get_server_name(std::vector<std::string> word){
         if ("server_name" == word[0]){
             // word[1].erase(word[1].find(';'));
             this->server_name = word[1];
@@ -137,25 +137,24 @@ int ServerConfig::get_server_name(std::vector<std::string> word){
         return 0;
 }
 
-int ServerConfig::get_error_page(std::vector<std::string> word){
+int Server::get_error_page(std::vector<std::string> word){
     if ("error_page" == word[0]){
         if (word.size() != 3)
             throw std::invalid_argument("error_pages: missing code or target..!");
-        // std::cout << word[0] << " :";
+        std::cout << word[0] << " :";
         if (word[1].length() != 3)
             throw std::invalid_argument("error_pages: invalid code");
         // if(word[2][0] != '/')
         //     throw std::invalid_argument("error_pages: invalid target");
         for (size_t i = 1; i < word.size(); i++)
             this->error_pages.push_back(word[i]);
-        if (access(word[2].c_str(), F_OK) == -1)
-            throw std::invalid_argument("error pages: file doesn't exist");
+        std::cout << word[1] << " " << word[2] << std::endl;
         return 1;
     }
     return 0;
 }
 
-int ServerConfig::get_clienMAxBodySize(std::vector<std::string> word){
+int Server::get_clienMAxBodySize(std::vector<std::string> word){
     if ("client_max_body_size" == word[0]){
         // word[1].erase(word[1].find(';'));
         for (size_t i = 0; i < word[1].length(); i++)
@@ -168,7 +167,7 @@ int ServerConfig::get_clienMAxBodySize(std::vector<std::string> word){
     return 0;
 }
 
-void ServerConfig::fill_server(std::string line, ServerConfig &srvr){
+void Server::fill_server(std::string line, Server &srvr){
     size_t posVergul = line.find(';');
     line.erase(posVergul);
     std::vector<std::string> word = split_line(line, " ");
@@ -177,10 +176,10 @@ void ServerConfig::fill_server(std::string line, ServerConfig &srvr){
     if (posVergul == std::string::npos && word[0] != "}")
         throw std::invalid_argument("can't find ';'");
     std::cout << "- " <<  word[0] << " = " << word[1] << std::endl;
-    if (word[0] != "listen" && word[0] != "host" && word[0] != "server_name"\
-        && word[0] != "error_page" && word[0] != "client_max_body_size"\
-        && word[0] != "root")
-        throw std::invalid_argument("server: invalid input in the server context!!!");
+    // if (word[0] != "listen" && word[0] != "host" && word[0] != "server_name"\
+    //     && word[0] != "error_page" && word[0] != "error_page"\
+    //     && word[0] != "client_max_body_size")
+    //     throw std::invalid_argument("server: there is an intruder string!!!");
     if(srvr.get_listen(word)){
         srvr.duplicate_set.insert("listen");
         srvr.duplicate_vec.push_back("listen");
@@ -201,7 +200,7 @@ void ServerConfig::fill_server(std::string line, ServerConfig &srvr){
 }
 
 
-void ServerConfig::get_file(std::string file){
+void Server::get_file(std::string file){
     BracketsCheck(file);
     std::ifstream ss;
     ss.open(file);
@@ -214,12 +213,12 @@ void ServerConfig::get_file(std::string file){
             if(line != "server{")
                 throw std::invalid_argument("server: invalid declaration");
 
-            ServerConfig srvr;
+            Server srvr;
             std::cout << "-----------SERVER-----------" << std::endl;
             while(std::getline(ss,line) && line != "}"){
                 if (line.find("location") != std::string::npos){
-                    std::cout << "      --------location-------- " << std::endl;
                     Location location;
+                    std::cout << "      --------location-------- " << std::endl;
                     location.get_location_Name(line);
                     while (std::getline(ss, line) && line.find("}") == std::string::npos){
                         if (line.find(';') == std::string::npos){
@@ -230,8 +229,6 @@ void ServerConfig::get_file(std::string file){
                         else
                             location.fill_location(line, location);
                     }
-                    
-                    srvr.locations.push_back(location);
                     std::cout << "      ------------------------" << std::endl;
                     if (location.root == "")
                         throw std::invalid_argument("location: root: invalid input");
@@ -248,9 +245,8 @@ void ServerConfig::get_file(std::string file){
                     srvr.fill_server(line, srvr);
             }
             std::cout << "----------------------------" << std::endl;
-            if (srvr.listen.size() < 1 || srvr.host == "")
-                throw std::invalid_argument("Serever: the server at least must have a\
-                    port and host");
+            // if (srvr.listen == -1 || srvr.host == "")
+            //     throw std::invalid_argument("hada ma howa hada");
              if (srvr.duplicate_set.size() != srvr.duplicate_vec.size())
                 throw std::invalid_argument("server: duplicate directive!");
             else
@@ -265,3 +261,5 @@ void ServerConfig::get_file(std::string file){
         }
     }
 }
+
+

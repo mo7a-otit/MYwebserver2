@@ -1,26 +1,23 @@
 NAME = webserv
+SRCS = Server/main.cpp \
+		Server/ServerManager.cpp \
+		config_Post/Location.cpp \
+		config_Post/Config.cpp \
+		config_Post/PostContentLength.cpp \
+		Request/Request.cpp
 
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g
-
-SRCS = srcs/main.cpp\
-		srcs/webserver.cpp\
-		srcs/Location.cpp\
-		srcs/ServerConfig.cpp\
-		srcs/Client.cpp\
-		srcs/Request.cpp\
-		srcs/Post.cpp\
-
-OBJS = $(SRCS:.cpp=.o)
-
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address -g3
+CXX = c++
+OBJ = $(SRCS:.cpp=.o)
 all : $(NAME)
 
-$(NAME) : $(OBJS)
-			c++ $(CXXFLAGS) $(OBJS) -o $(NAME)
+$(NAME) : $(OBJ)
+	$(CXX) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 clean :
-	rm -rf $(OBJS)
+	rm -f $(OBJ)
 
 fclean : clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
-re : fclean all
+re : fclean all 
