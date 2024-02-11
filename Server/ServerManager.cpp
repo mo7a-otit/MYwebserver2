@@ -105,7 +105,7 @@ void ServerManager::manageClients(void)
 			clientIter->buffer[clientIter->readBytes] = '\0';
 			RequestParse(*clientIter);
         }
-        else
+        else  
             clientIter++;
     }
 }
