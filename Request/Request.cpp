@@ -10,7 +10,7 @@ void	ServerManager::RequestHeadersParse(Client& _client)
 		if (_client.buff[0] == '\r')
 		{
 			_client.buff.erase(0, 2);
-			_client.request = true;
+			_client.request = true; 
 			break;
 		}
 		key = _client.buff.substr(0, _client.buff.find(':'));

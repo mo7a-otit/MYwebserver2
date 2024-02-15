@@ -12,7 +12,7 @@ class Location{
         std::vector<std::string> allowed_methods;
         std::vector<std::string> index;
         //need to add this
-        bool autoindex;
+        bool autoindex; 
         bool upload;
         bool cgi;
 
